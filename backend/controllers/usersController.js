@@ -1,5 +1,7 @@
 import User from '../models/User.js'
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken' 
+
 
 const register = async ( req ,res )=>{
     try{
@@ -39,9 +41,71 @@ const register = async ( req ,res )=>{
 
 }
 
+const loginController = async ( req , res )=>{
+    try{
+        const { email , password } = req.body;
+        const userExist = await User.findOne( { email:email } )
+        
+        if(!userExist){
+            return res.status(404).json( { messsage:"Invalid email or password" } )
+        }
+        const isMatch = await bcrypt.compare(password , userExist.password)
+        if(!isMatch){
+            return res.status(404).json( { messsage:"Invalid email or password" } )
+        }
+        const token  = jwt.sign({ id:userExist._id }, process.env.JWT_SECRET_KEY, {
+            expiresIn:"1d"
+
+        })
+        res.cookie('token',token,{
+            httpOnly:true,
+        })
+
+        res.status(200).json({
+            username:userExist.username,
+
+        })
+
+
+    }catch(err){
+        res.status(500).json({ message:"internal server error" })
+
+    }
+}
+
+const logoutController =  async( req , res ) =>{
+    try{
+        res.cookie('token','',{ maxAge:1 });
+        res.status(200).json({
+            message: "logout successfull"
+        })
+    }catch(err){
+        res.status(500).json({ message:"internal server error" })
+    }
+}
+
+const getUserController =  async ( req, res )=>{
+    try{
+        const user = await User.findById( req.userId ).select('-password');
+        if(!user){
+            res.status(404).json({ messsage:"user doesn't exist" })
+        }
+        
+        res.status(200).json({
+            user
+        })
+
+
+    }catch(err){
+        res.status(500).json({ message:"internal server error" })
+    }
+}
 
 
 export default {
-    register
+    register,
+    loginController,
+    logoutController,
+    getUserController
 
 }

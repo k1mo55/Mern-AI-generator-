@@ -20,3 +20,9 @@ export const validateRegister = [
     body("password").isString().notEmpty().withMessage("username is requried").isLength({ min:6}).withMessage("minimum of 6 characters"),
     handleValidationErrors
 ]
+
+export const validateLogin = [
+    body("email").isString().isEmail().notEmpty().withMessage("email is requried"),
+    body("password").isString().notEmpty().withMessage("username is requried").isLength({ min:6}).withMessage("minimum of 6 characters"),
+    handleValidationErrors
+]
