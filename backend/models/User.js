@@ -26,7 +26,7 @@ const UserSchema = new mongoose.Schema({
         type:Number,
         default:3
     },
-    subscription:{  
+    subscriptionPlan:{  
         type:String,
         enum:['Trial','Free','Basic','Premium']
     },
@@ -36,9 +36,9 @@ const UserSchema = new mongoose.Schema({
     },
     monthlyRequestCount:{  
         type:Number,
-        default:0
+        default:100
     },
-    NextBillingDate:{  
+    nextBillingDate:{  
         type:Date,
     },
     payments:[
@@ -51,7 +51,7 @@ const UserSchema = new mongoose.Schema({
     history:[
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref:"Histroy"
+            ref:"ContentHistory"
 
         }
     ],
@@ -59,10 +59,15 @@ const UserSchema = new mongoose.Schema({
 
 
 },{
-    timestamps:true
-
+    timestamps:true,
+    toJSON:{ virtuals:true},
+    toObject:{ virtuals:true},
 }
 )
+
+
+
+
 
 const User = mongoose.model("User",UserSchema);
 

@@ -1,4 +1,3 @@
-import { subscribe } from "diagnostics_channel";
 import mongoose, { mongo } from "mongoose";
 
 const paymentSchema = new mongoose.Schema({
@@ -29,7 +28,7 @@ const paymentSchema = new mongoose.Schema({
     },
     monthlyRequestCount:{  
         type:Number,
-        required:true
+       
     },
     
 

@@ -86,7 +86,7 @@ const logoutController =  async( req , res ) =>{
 
 const getUserController =  async ( req, res )=>{
     try{
-        const user = await User.findById( req.userId ).select('-password');
+        const user = await User.findById( req.userId ).select('-password').populate('payments').populate('history');
         if(!user){
             res.status(404).json({ messsage:"user doesn't exist" })
         }

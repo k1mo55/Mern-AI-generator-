@@ -1,5 +1,4 @@
-import { subscribe } from "diagnostics_channel";
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 const ContentHistorySchema = new mongoose.Schema({
     user:{  
@@ -19,4 +18,4 @@ const ContentHistorySchema = new mongoose.Schema({
 
 const ContentHistory = mongoose.model("ContentHistory",ContentHistorySchema);
 
-export default Payment
+export default  ContentHistory
